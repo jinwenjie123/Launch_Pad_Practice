@@ -1,12 +1,18 @@
 import express from 'express';
 import {v4 as uuidv4 } from 'uuid';
 
-const router = express.Router();
 
+const router = express.Router();
 // fake order database for order record
 let orders = [];
-
-let menu = ["pizza1", "pizza2", "pizza3"];
+// fake user database for user record, we can assume user.js and order.js files can access the same database
+let users = [{
+    "name": "Alice",
+    "orderID": [
+        "90ce20cb-b8bc-404c-bc00-22839e5cb371"
+    ],
+    "userID": "c2048496-29b1-4452-a23f-62bda94c5056"
+}];
 
 // return all order records
 router.get('/', (req, res) => {
@@ -14,28 +20,21 @@ router.get('/', (req, res) => {
 });
 
 // allow a user to order a pizza (add new order to the orders)
-router.post('/:user_id/:pizza_name', (req, res) => {
-    const { user_id, pizza_name} = req.params;
-
+router.post('/:userID', (req, res) => {
+    const userID = req.params.userID;
+    const orderID = uuidv4();
     const order = req.body;
-    const orderWithId = { ...order, pizza_name: pizza_name, user_id: user_id};
+    const orderWithId = { ...order, orderID: orderID, userID: userID};
+    console.log(users.orderID);
+    // users[users.length - 1].orderID.add(orderID);
     orders.push(orderWithId);
-    res.send(`New order ${orderWithId.pizza_name} has been placed successfully by ${orderWithId.user_id}`); 
+    res.send(`New order ${orderWithId.orderID} has been placed successfully by ${orderWithId.userID}`); 
 });
 
-// find the user's order status 
-router.get('/:user_id/:pizza_name', (req, res) => {
-    const { user_id, pizza_name} = req.params;
-    const found = orders.find((order) => order.user_id === user_id && order.pizza_name === pizza_name);
-    res.send(found);
+router.get('/:orderID', (req, res) => {
+    const orderID  = req.params.orderID;
+    const orderFound = orders.find((order) => order.orderID === orderID);
+    res.send(orderFound);
 });
-
-// find the user's all receipt 
-router.get('/:user_id', (req, res) => {
-    const { user_id } = req.params;
-    const result = orders.filter(order => order.user_id === user_id);
-    res.send(result);
-});
-
 
 export default router;
