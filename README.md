@@ -14,7 +14,7 @@ Used **users** and **menu** arrays to store all users' information and pizzas av
 Furthermore, all APIs have been tested using Postman
 
 |Operation      |Endpoint       |Description                                             |
-| ------------- | ------------- | ------------------------------------------------------ |
+|-------------  |-------------   |------------------------------------------------------ |
 |GET  |http://localhost:5001/users/menu           |Find all pizzas in the menu           |
 |GET  |http://localhost:5001/users                |Find all users' information           |
 |POST |http://localhost:5001/users                |Add a new user into database          |
